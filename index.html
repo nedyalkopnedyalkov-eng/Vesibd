@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Birthday Riddle & VIP Ticket</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #111;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    text-align: center;
+    padding: 20px;
+  }
+  .container {
+    max-width: 600px;
+    background: rgba(255,255,255,0.08);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(255,255,255,0.2);
+    margin-bottom: 20px;
+  }
+  input[type="text"] {
+    width: 80%;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    margin: 10px 0;
+  }
+  button {
+    padding: 10px 18px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+  }
+  .error {
+    color: #ff6b6b;
+    margin-top: 10px;
+  }
+  .ticket {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(255,255,255,0.1);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(255,255,255,0.2);
+    max-width: 700px;
+  }
+  .ticket img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(255,255,255,0.3);
+  }
+  .download-btn {
+    margin-top: 15px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    background: #ffcc00;
+    color: #000;
+    font-weight: bold;
+  }
+  #confetti-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+<canvas id="confetti-canvas"></canvas>
+
+<div class="container" id="riddle-container">
+  <h1>🎂 Баба Веси става на 2×25 🎂</h1>
+  <p id="riddle">
+    Призванието баба заслужи през двадесет и петта година,<br>
+    а в грижите за Пепи сияеш с обич и яка гърбина.<br>
+    Сериозен опит имаш с разходки, хранене и колички,<br>
+    за "баба" малчуганът разказва на всички.<br><br>
+
+    Че си имаш всичко, което желаеш, знаем,<br>
+    но все пак се опитваме да разгадаем.<br>
+    Каква ли е твоята мечта?<br>
+    Дали не е нова спортна кола…?<br><br>
+
+    Помним забавата с подаръка за петия юбилей на тате.<br>
+    Сега обаче е ред на твой гръб — от смях всеки да плаче.<br>
+    С какво ли ще те изненадаме за рождения ти ден?<br>
+    На Малдивите цяла седмица събираш бронзов тен.<br><br>
+
+    Обаче изненадите не свършват там.<br>
+    Очаква те "ивент" голям.<br>
+    За теб и дядо Пепи може да е агония,<br>
+    стягайте се за…
+  </p>
+  <input type="text" id="answer" placeholder="Въведи отговора тук..." />
+  <br />
+  <button onclick="checkAnswer()">Submit</button>
+  <p id="error" class="error"></p>
+</div>
+
+<div class="ticket" id="ticket">
+  <h1>🎟️ Congratulations Vesselina! 🎟️</h1>
+  <p>You've solved the mystery — pack your bags, you’re going to the</p>
+  <p><strong>Vienna Philharmonic New Year’s Concert!</strong></p>
+  <img src="IMG_5224.jpeg" alt="Concert Ticket">
+  <button class="download-btn" onclick="downloadTicket()">Download Ticket</button>
+</div>
+
+<audio id="music" loop>
+  <source src="https://www.classiccat.net/audio/mozart-25-in-g-minor-mov-1.mp3" type="audio/mpeg">
+</audio>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+<script>
+const confettiCanvas = document.getElementById('confetti-canvas');
+const myConfetti = confetti.create(confettiCanvas, { resize: true, useWorker: true });
+let confettiInterval;
+
+function startConfetti() {
+  confettiInterval = setInterval(() => {
+    myConfetti({ particleCount: 5, spread: 70, origin: { y: 0.6 } });
+  }, 200);
+}
+
+function checkAnswer() {
+  const answer = document.getElementById('answer').value.toLowerCase().trim();
+  const correctAnswer = 'виенската филхармония';
+  if (answer === correctAnswer) {
+    document.getElementById('riddle-container').style.display = 'none';
+    document.getElementById('ticket').style.display = 'flex';
+    document.getElementById('music').play();
+    startConfetti();
+  } else {
+    document.getElementById('error').innerText = 'Грешно! Опитай пак!';
+  }
+}
+
+function downloadTicket() {
+  const link = document.createElement("a");
+  link.download = "Vesselina_VIP_Ticket.jpg";
+  link.href = "IMG_5224.jpeg";
+  link.click();
+}
+</script>
+</body>
+</html>
